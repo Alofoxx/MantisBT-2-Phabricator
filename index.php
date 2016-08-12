@@ -17,10 +17,19 @@
  * @author Alofoxx <https://github.com/Alofoxx>
  * @license Apache License 2.0 <http://www.apache.org/licenses/>
  */
-
+ //error_reporting(E_ALL ^ E_NOTICE);
+ error_reporting(E_ALL);
+ ini_set("display_errors",true);
 
 // Start the session
 session_start();
+
+if(isset($_GET['action']) && $_GET['action'] == "reset" ) {
+  //we want to nuke everything in session and start over
+  foreach($_SESSION as $key => $value){
+				unset($_SESSION[$key]);
+  }
+}
 
 /**
  * Turns on debugging for dev. Default false.
@@ -34,6 +43,27 @@ require(__DIR__ . '/m2p_config.php');
 require(__DIR__ . '/m2p_mantisbt.php');
 
 //do stuff
+
+mbt_getProjects();
+mbt_getUsers();
+mbt_getTags();
+mbt_getVersions();
+mbt_getCustomFields();
+mbt_getCustomFieldAnswers();
+mbt_getCategories();
+mbt_getTickets();
+mbt_getComments();
+
+
+
+
+
+
+
+
+
+
+
 /*
 most of this is white boarded so only adding text to give viewers a rough
 idea of the plan.. very much a WIP.
@@ -92,3 +122,13 @@ based on imported things
 process the array dump from first steps or user provided into conduit.
 
 */
+
+//debug printing.
+if(M2P_DEBUG){
+  print "<pre>";
+  print "<br /> /*---------( M2P_CONFIG )-----------------------------*/ <br />";
+  print_r($M2P_CONFIG);
+  print "<br /> /*---------( _SESSION )-----------------------------*/ <br />";
+  print_r($_SESSION);
+  print "</pre>";
+}

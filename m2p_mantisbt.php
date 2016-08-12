@@ -1,10 +1,10 @@
 <?php
 //core mantisbt functions
 function dbpdo(){
-  $pdo = new PDO( $M2P_CONFIG['mbt_db_dsn'],
-                  $M2P_CONFIG['mbt_db_username'],
-                  $M2P_CONFIG['mbt_db_password'],
-                  $M2P_CONFIG['mbt_db_opt']
+  $pdo = new PDO( $GLOBALS['M2P_CONFIG']['mbt_db_dsn'],
+                  $GLOBALS['M2P_CONFIG']['mbt_db_username'],
+                  $GLOBALS['M2P_CONFIG']['mbt_db_password'],
+                  $GLOBALS['M2P_CONFIG']['mbt_db_opt']
                 );
   return $pdo;
 }
@@ -110,7 +110,7 @@ function mbt_getCustomFieldAnswers(){
   $data = array();
 
   //no point in importing blank answers.
-  $results = $pdo->query('SELECT * FROM `mantis_custom_field_string_table` WHERE `value` != "".');
+  $results = $pdo->query('SELECT * FROM `mantis_custom_field_string_table` WHERE `value` != ""');
 
   // data['custom field id'] = array( "bug number" => "answer", ... )
   foreach ($results as $row)
@@ -189,7 +189,28 @@ function mbt_getComments(){
 //need to update the comment authors in two places once added.
 // maniphest_transaction_comment
 // maniphest_transaction
+  $pdo = dbpdo();
+  $data = array();
 
+  $results = $pdo->query('SELECT mantis_bugnote_table.*,
+                            mantis_bugnote_text_table.note
+                          FROM mantis_bugnote_table
+                          LEFT JOIN mantis_bugnote_text_table
+                          ON mantis_bugnote_table.bugnote_text_id = mantis_bugnote_text_table.id');
+
+  // data['bug number'] = array( "bugnote number" => array(note data), ... )
+  foreach ($results as $row)
+  {
+    $data[$row['bug_id']][$row['id']]['id'] = $row['id'];
+    $data[$row['bug_id']][$row['id']]['bug_id'] = $row['bug_id'];
+    $data[$row['bug_id']][$row['id']]['reporter_id'] = $row['reporter_id'];
+    $data[$row['bug_id']][$row['id']]['last_modified'] = $row['last_modified'];
+    $data[$row['bug_id']][$row['id']]['date_submitted'] = $row['date_submitted'];
+    $data[$row['bug_id']][$row['id']]['note'] = base64_encode($row['note']);
+  }
+
+  $_SESSION['mbt']['mantis_bugnote_table'] = $data;
+  return;
 
 }
 
