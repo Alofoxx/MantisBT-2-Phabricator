@@ -76,7 +76,17 @@ EOD;
 
 
 function drawBottom(){
-    print <<<EOD
+  //debug printing.
+  if(M2P_DEBUG){
+    print "<pre>";
+    print "<br /> /*---------( M2P_CONFIG )-----------------------------*/ <br />";
+    print_r($GLOBALS['M2P_CONFIG']);
+    print "<br /> /*---------( _SESSION )-----------------------------*/ <br />";
+    print_r($_SESSION);
+    print "</pre>";
+  }
+
+  print <<<EOD
 
     </div>
   </div>

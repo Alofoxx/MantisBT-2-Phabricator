@@ -63,15 +63,7 @@ if(isset($_GET['step']) && is_numeric($_GET['step']) && $_GET['step'] >= 0 && $_
 //else no post - so just do the current step.
 runCurrentStep();
 
-//debug printing.
-if(M2P_DEBUG){
-  print "<pre>";
-  print "<br /> /*---------( M2P_CONFIG )-----------------------------*/ <br />";
-  print_r($M2P_CONFIG);
-  print "<br /> /*---------( _SESSION )-----------------------------*/ <br />";
-  print_r($_SESSION);
-  print "</pre>";
-}
+
 
 /*
 mbt_getProjects();
