@@ -29,6 +29,9 @@ if(isset($_GET['action']) && $_GET['action'] == "reset" ) {
   foreach($_SESSION as $key => $value){
 				unset($_SESSION[$key]);
   }
+  session_destroy();
+  header( 'Location: index.php' );
+  die; //the page must be reloaded to reset the tool.
 }
 
 /**
@@ -40,10 +43,37 @@ defined('M2P_DEBUG') or define('M2P_DEBUG', true);
 require(__DIR__ . '/m2p_config.php');
 
 //core files
+require(__DIR__ . '/m2p_core.php');
 require(__DIR__ . '/m2p_mantisbt.php');
+require(__DIR__ . '/m2p_draw.php');
 
-//do stuff
+//initialize the wizard step control
+if(!isset($_SESSION['wizardStep'])) {
+  loadSteps();
+}
 
+//check if we are doing a step overide to jump to a specific step.
+if(isset($_GET['step']) && is_numeric($_GET['step']) && $_GET['step'] >= 0 && $_GET['step'] < 11 ) {
+  //set the current step to the desired step - next/back will be updated on step run.
+  $_SESSION['wizardStep']['currentStep'] = $_GET['step'];
+}
+
+//check for post and handle it accordingly here.
+
+//else no post - so just do the current step.
+runCurrentStep();
+
+//debug printing.
+if(M2P_DEBUG){
+  print "<pre>";
+  print "<br /> /*---------( M2P_CONFIG )-----------------------------*/ <br />";
+  print_r($M2P_CONFIG);
+  print "<br /> /*---------( _SESSION )-----------------------------*/ <br />";
+  print_r($_SESSION);
+  print "</pre>";
+}
+
+/*
 mbt_getProjects();
 mbt_getUsers();
 mbt_getTags();
@@ -54,17 +84,12 @@ mbt_getCategories();
 mbt_getTickets();
 mbt_getComments();
 
-
-
-
-
-
-
-
-
-
+*/
 
 /*
+end file
+------------
+
 most of this is white boarded so only adding text to give viewers a rough
 idea of the plan.. very much a WIP.
 
@@ -122,13 +147,3 @@ based on imported things
 process the array dump from first steps or user provided into conduit.
 
 */
-
-//debug printing.
-if(M2P_DEBUG){
-  print "<pre>";
-  print "<br /> /*---------( M2P_CONFIG )-----------------------------*/ <br />";
-  print_r($M2P_CONFIG);
-  print "<br /> /*---------( _SESSION )-----------------------------*/ <br />";
-  print_r($_SESSION);
-  print "</pre>";
-}
