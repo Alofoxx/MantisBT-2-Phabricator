@@ -1,5 +1,12 @@
 <?php
-//core mantisbt functions
+/**
+ * MantisBT exporting functions.
+ *
+ * @see github <https://github.com/Alofoxx/MantisBT-2-Phabricator>
+ * @author Alofoxx <https://github.com/Alofoxx>
+ * @license Apache License 2.0 <http://www.apache.org/licenses/>
+ */
+
 function dbpdo(){
   $pdo = new PDO( $GLOBALS['M2P_CONFIG']['mbt_db_dsn'],
                   $GLOBALS['M2P_CONFIG']['mbt_db_username'],
@@ -75,7 +82,7 @@ function mbt_getVersions(){
     $data[$row['project_id']][$row['id']]['id'] = $row['id'];
     $data[$row['project_id']][$row['id']]['project_id'] = $row['project_id'];
     $data[$row['project_id']][$row['id']]['version'] = $row['version'];
-    $data[$row['project_id']][$row['id']]['description'] = $row['description'];
+    $data[$row['project_id']][$row['id']]['description'] = base64_encode($row['description']);
     $data[$row['project_id']][$row['id']]['released'] = $row['released'];
   }
 
@@ -174,9 +181,9 @@ function mbt_getTickets(){
     $data[$row['project_id']][$row['id']]['category_id'] = $row['category_id'];
     $data[$row['project_id']][$row['id']]['date_submitted'] = $row['date_submitted'];
     $data[$row['project_id']][$row['id']]['last_updated'] = $row['last_updated'];
-    $data[$row['project_id']][$row['id']]['description'] = $row['description'];
-    $data[$row['project_id']][$row['id']]['steps_to_reproduce'] = $row['steps_to_reproduce'];
-    $data[$row['project_id']][$row['id']]['additional_information'] = $row['additional_information'];
+    $data[$row['project_id']][$row['id']]['description'] = base64_encode($row['description']);
+    $data[$row['project_id']][$row['id']]['steps_to_reproduce'] = base64_encode($row['steps_to_reproduce']);
+    $data[$row['project_id']][$row['id']]['additional_information'] = base64_encode($row['additional_information']);
   }
 
   $_SESSION['mbt']['mantis_bug_table'] = $data;
