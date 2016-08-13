@@ -59,8 +59,11 @@ if(isset($_GET['step']) && is_numeric($_GET['step']) && $_GET['step'] >= 0 && $_
 }
 
 //check for post and handle it accordingly here.
-
-//else no post - so just do the current step.
+if(isset($_POST)){
+  //todo csrf
+  validateCurrentStep();
+}
+//do stuff.
 runCurrentStep();
 
 

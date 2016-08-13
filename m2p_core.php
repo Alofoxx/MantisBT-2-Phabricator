@@ -52,6 +52,11 @@ function setNextStep($step){
   return;
 }
 
+function setCurrentStep($step){
+  $_SESSION['wizardStep']['currentStep'] = $step;
+  return;
+}
+
 function runCurrentStep(){
   //Okay we are running the current step.
   switch ($_SESSION['wizardStep']['currentStep']) {
@@ -95,12 +100,63 @@ function runCurrentStep(){
   return;
 }
 
+function validateCurrentStep(){
+  //validate post
+  switch ($_SESSION['wizardStep']['currentStep']) {
+    case 0:
+      checkstartPage();
+      break;
+    case 1:
+      checkbtUser();
+      break;
+    case 2:
+      checkbtProject();
+      break;
+    case 3:
+      checkbtVersion();
+      break;
+    case 4:
+      checkbtTag();
+      break;
+    case 5:
+      checkbtCategory();
+      break;
+    case 6:
+      checkbtCustomField();
+      break;
+    case 7:
+      checkbtBugs();
+      break;
+    case 8:
+      checkbtComments();
+      break;
+    case 9:
+      checkbtFiles();
+      break;
+    case 10:
+      checkbtFinish();
+      break;
+    default:
+      //
+      break;
+  }
+  return;
+}
+
 function loadstartPage(){
   setPreviousStep(0);
   setNextStep(1);
   drawTop("Welcome");
   //drawProgress();
-  print "<p>This is my start page with some shit";
+  require(__DIR__ . '/template/startPage.html');
   drawBottom();
+  return;
+}
+
+function checkstartPage(){
+  //checks post and moves to next step
+  if(isset($_POST['button']) && $_POST['button'] === "Get Started"){
+    setCurrentStep(1);
+  }
   return;
 }
