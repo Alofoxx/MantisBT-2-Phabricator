@@ -71,6 +71,48 @@ function drawTop($header){
 
 
 EOD;
+
+  if(isset($_SESSION['error']) && $_SESSION['error']){
+    print '          <div class="alert alert-danger" role="alert">';
+    print '            <strong>Oh snap!</strong> Please address the following: ';
+    foreach ($_SESSION['errorMessage'] as $errorMessage) {
+      print '            <br /> '.$errorMessage.' ';
+    }
+    print '          </div>';
+  }
+
+  return;
+}
+
+function drawProgress($subheader){
+  $nav = array();
+
+  foreach($_SESSION['wizardStep']['steps'] as $step => $title){
+    $nav[$step]['active'] = "";
+    $nav[$step]['url'] = "";
+    if($_SESSION['wizardStep']['done'][$step]){
+      $nav[$step]['url'] = "index.php?step=".$step;
+    }
+  }
+  $nav[$_SESSION['wizardStep']['currentStep']]['active'] = "active";
+
+  print'            <!-- Breadcumb -->
+              <ul class="nav nav-wizard nav-justified">';
+  print'                	<li class="'.$nav['1']['active'].'"><a href="'.$nav['1']['url'].'"><span class="badge badge-step">1</span> Users</a></li>';
+  print'                  <li class="'.$nav['2']['active'].'"><a href="'.$nav['2']['url'].'"><span class="badge badge-step">2</span> Projects</a></li>';
+  print'                  <li class="'.$nav['3']['active'].'"><a href="'.$nav['3']['url'].'"><span class="badge badge-step">3</span> Versions</a></li>';
+  print'                	<li class="'.$nav['4']['active'].'"><a href="'.$nav['4']['url'].'"><span class="badge badge-step">4</span> Tags</a></li>';
+  print'                  <li class="'.$nav['5']['active'].'"><a href="'.$nav['5']['url'].'"><span class="badge badge-step">5</span> Categories</a></li>';
+  print'                	<li class="'.$nav['6']['active'].'"><a href="'.$nav['6']['url'].'"><span class="badge badge-step">6</span> Custom Fields</a></li>';
+  print'                  <li class="'.$nav['7']['active'].'"><a href="'.$nav['7']['url'].'"><span class="badge badge-step">7</span> Bugs</a></li>';
+  print'                  <li class="'.$nav['8']['active'].'"><a href="'.$nav['8']['url'].'"><span class="badge badge-step">8</span> Comments</a></li>';
+  print'                  <li class="'.$nav['9']['active'].'"><a href="'.$nav['9']['url'].'"><span class="badge badge-step">9</span> Files</a></li>';
+  print'                  <li class="'.$nav['10']['active'].'"><a href="'.$nav['10']['url'].'"><span class="badge badge-step">10</span> Confirm</a></li>
+              </ul>
+            <!-- End Breadcumb -->
+            <hr />
+            <h2 class="sub-header">'.$subheader.'</h2>
+';
   return;
 }
 

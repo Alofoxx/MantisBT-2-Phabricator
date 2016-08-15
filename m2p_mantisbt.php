@@ -48,6 +48,8 @@ function mbt_getUsers(){
     $mantis_user_table[$row['id']]['email'] = $row['email'];
     $mantis_user_table[$row['id']]['enabled'] = $row['enabled'];
     $mantis_user_table[$row['id']]['access_level'] = $row['access_level'];
+    //support for Phab user titles
+    $mantis_user_table[$row['id']]['title'] = "";
   }
 
   $_SESSION['mbt']['mantis_user_table'] = $mantis_user_table;
@@ -134,14 +136,14 @@ function mbt_getCategories(){
   $pdo = dbpdo();
   $data = array();
 
-  $results = $pdo->query('SELECT * FROM `mantis_custom_field_table`');
+  $results = $pdo->query('SELECT * FROM `mantis_category_table`');
   foreach ($results as $row)
   {
     $data[$row['id']]['id'] = $row['id'];
     $data[$row['id']]['name'] = $row['name'];
   }
 
-  $_SESSION['mbt']['mantis_custom_field_table'] = $data;
+  $_SESSION['mbt']['mantis_category_table'] = $data;
   return;
 }
 

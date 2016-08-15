@@ -45,6 +45,7 @@ require(__DIR__ . '/m2p_config.php');
 //core files
 require(__DIR__ . '/m2p_core.php');
 require(__DIR__ . '/m2p_mantisbt.php');
+require(__DIR__ . '/m2p_phabricator.php');
 require(__DIR__ . '/m2p_draw.php');
 
 //initialize the wizard step control
@@ -53,13 +54,20 @@ if(!isset($_SESSION['wizardStep'])) {
 }
 
 //check if we are doing a step overide to jump to a specific step.
-if(isset($_GET['step']) && is_numeric($_GET['step']) && $_GET['step'] >= 0 && $_GET['step'] < 11 ) {
-  //set the current step to the desired step - next/back will be updated on step run.
-  $_SESSION['wizardStep']['currentStep'] = $_GET['step'];
+if(isset($_GET['step']) && is_numeric($_GET['step'])) {
+  if ($_SESSION['wizardStep']['done'][$_GET['step']] ) {
+    //only let users force steps that are already marked done
+
+    //set the current step to the desired step - next/back will be updated on step run.
+    $_SESSION['wizardStep']['currentStep'] = $_GET['step'];
+  }
+  //reset url
+  header( 'Location: index.php' );
+
 }
 
 //check for post and handle it accordingly here.
-if(isset($_POST)){
+if(isset($_POST['button'])){
   //todo csrf
   validateCurrentStep();
 }
