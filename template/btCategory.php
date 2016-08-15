@@ -10,6 +10,7 @@
 function drawbtCategory(){
   print <<<EOD
           <p> These are some instructions. </p>
+          <p> Names will map to the existing Phabricator categories if they exist. </p>
 
           <input type="submit" class="btn btn-default pull-left" value="Back">
           <form action="index.php" method="post" name="" id="">
