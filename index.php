@@ -17,21 +17,21 @@
  * @author Alofoxx <https://github.com/Alofoxx>
  * @license Apache License 2.0 <http://www.apache.org/licenses/>
  */
- //error_reporting(E_ALL ^ E_NOTICE);
- error_reporting(E_ALL);
- ini_set("display_errors",true);
+//error_reporting(E_ALL ^ E_NOTICE);
+error_reporting(E_ALL);
+ini_set("display_errors", true);
 
 // Start the session
 session_start();
 
-if(isset($_GET['action']) && $_GET['action'] == "reset" ) {
-  //we want to nuke everything in session and start over
-  foreach($_SESSION as $key => $value){
-				unset($_SESSION[$key]);
-  }
-  session_destroy();
-  header( 'Location: index.php' );
-  die; //the page must be reloaded to reset the tool.
+if (isset($_GET['action']) && $_GET['action'] == "reset") {
+    //we want to nuke everything in session and start over
+    foreach ($_SESSION as $key => $value) {
+        unset($_SESSION[$key]);
+    }
+    session_destroy();
+    header('Location: index.php');
+    die; //the page must be reloaded to reset the tool.
 }
 
 /**
@@ -40,36 +40,34 @@ if(isset($_GET['action']) && $_GET['action'] == "reset" ) {
 defined('M2P_DEBUG') or define('M2P_DEBUG', true);
 
 //all the connection settings are in this file:
-require(__DIR__ . '/m2p_config.php');
+require(__DIR__.'/m2p_config.php');
 
 //core files
-require(__DIR__ . '/m2p_core.php');
-require(__DIR__ . '/m2p_mantisbt.php');
-require(__DIR__ . '/m2p_phabricator.php');
-require(__DIR__ . '/m2p_draw.php');
+require(__DIR__.'/m2p_core.php');
+require(__DIR__.'/m2p_mantisbt.php');
+require(__DIR__.'/m2p_phabricator.php');
+require(__DIR__.'/m2p_draw.php');
 
 //initialize the wizard step control
-if(!isset($_SESSION['wizardStep'])) {
-  loadSteps();
+if (!isset($_SESSION['wizardStep'])) {
+    loadSteps();
 }
 
 //check if we are doing a step overide to jump to a specific step.
-if(isset($_GET['step']) && is_numeric($_GET['step'])) {
-  if ($_SESSION['wizardStep']['done'][$_GET['step']] ) {
-    //only let users force steps that are already marked done
-
-    //set the current step to the desired step - next/back will be updated on step run.
-    $_SESSION['wizardStep']['currentStep'] = $_GET['step'];
-  }
-  //reset url
-  header( 'Location: index.php' );
-
+if (isset($_GET['step']) && is_numeric($_GET['step'])) {
+    if ($_SESSION['wizardStep']['done'][$_GET['step']]) {
+        //only let users force steps that are already marked done
+        //set the current step to the desired step - next/back will be updated on step run.
+        $_SESSION['wizardStep']['currentStep'] = $_GET['step'];
+    }
+    //reset url
+    header('Location: index.php');
 }
 
 //check for post and handle it accordingly here.
-if(isset($_POST['button'])){
-  //todo csrf
-  validateCurrentStep();
+if (isset($_POST['button'])) {
+    //todo csrf
+    validateCurrentStep();
 }
 //do stuff.
 runCurrentStep();
