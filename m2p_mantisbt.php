@@ -84,6 +84,8 @@ function mbt_getVersions()
     foreach ($results as $row) {
         $data[$row['project_id']][$row['id']]['id']          = $row['id'];
         $data[$row['project_id']][$row['id']]['project_id']  = $row['project_id'];
+        //the next line is intentionally name = version as projects dont have versions
+        $data[$row['project_id']][$row['id']]['name']        = $row['version'];
         $data[$row['project_id']][$row['id']]['version']     = $row['version'];
         $data[$row['project_id']][$row['id']]['description'] = base64_encode($row['description']);
         $data[$row['project_id']][$row['id']]['released']    = $row['released'];
