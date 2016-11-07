@@ -27,7 +27,7 @@ function mbt_getProjects()
     foreach ($results as $row) {
         $mantis_project_table[$row['id']]['id']          = $row['id'];
         $mantis_project_table[$row['id']]['name']        = $row['name'];
-        $mantis_project_table[$row['id']]['description'] = $row['description'];
+        $mantis_project_table[$row['id']]['description'] = base64_encode($row['description']);
         $mantis_project_table[$row['id']]['enabled']     = $row['enabled'];
     }
 
