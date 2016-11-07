@@ -1,4 +1,13 @@
 <?php
+/**
+ * Phabricator user functions.
+ *
+ * @see github <https://github.com/Alofoxx/MantisBT-2-Phabricator>
+ * @author Alofoxx <https://github.com/Alofoxx>
+ * @license Apache License 2.0 <http://www.apache.org/licenses/>
+ */
+
+//root to phabricator folder in installed phab
 $root     = "/var/www/phab/phabricator";
 require_once $root.'/scripts/__init_script__.php';
 
@@ -29,6 +38,7 @@ print_r($test);
  *
  * If user does not exist then it creates one, and also sets the title and active.
  *
+ * @author Alofoxx
  * @param array $user User to get account for
  * @param string $admin username of Phab admin [1st user account]
  * @param bool $sendEmail - future implementation
@@ -137,6 +147,12 @@ function getOrAddUser($user, $admin = "")
 
 /**
  * Update the Title on a user profile for a Phabricator user.
+ * 
+ * There was no simple proccess for this even in conduit.
+ * so I made my own tool that does it mostly like the actual
+ * edit profile view.
+ *
+ * @author Alofoxx
  */
 function setUserTitle(PhabricatorUser $phabUser, $title)
 {
